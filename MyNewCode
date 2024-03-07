@@ -1,0 +1,27 @@
+from scipy.integrate import solve_ivp
+import numpy as np
+
+# Define the third-order ODE
+def third_order_ode(x, y):
+    dydx = np.zeros_like(y)
+    dydx[0] = y[1]  # y'
+    dydx[1] = y[2]  # y''
+    dydx[2] = -2*y[2] - 3*y[1] + np.sin(x)  # y''' = -2*y'' - 3*y' + sin(x)
+    return dydx
+
+# Define the initial conditions
+initial_conditions = [0, 0, 0]  # y(0) = 0, y'(0) = 0, y''(0) = 0
+
+# Define the range of x values to solve the ODE over
+x_range = (0, 10)
+
+# Solve the ODE
+solution = solve_ivp(third_order_ode, x_range, initial_conditions, dense_output=True)
+
+# Get the solution values at specific x values
+x_values = np.linspace(0, 10, 100)  # 100 points between 0 and 10
+y_values = solution.sol(x_values)
+
+# Print or plot the solution
+print("Solution:")
+print(y_values)
